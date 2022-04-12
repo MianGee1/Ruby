@@ -1,4 +1,3 @@
-require "byebug"
 def caps(password)
   upCase = "ABCDEFGHIJKLMNOPQRSTUVXYZ"
   upCase_size = upCase.length
@@ -27,6 +26,7 @@ def symb(password)
   password = password + symbols[index]
 end
 
+
 def random_password (alpha_size,nums_size,symb_size)
   len = alpha_size + nums_size + symb_size
   password = ""
@@ -38,7 +38,11 @@ def random_password (alpha_size,nums_size,symb_size)
       unless alpha == alpha_size
         alpha = alpha + 1
         choice_between_cap_sma = rand(1..2)
-        choice_between_cap_sma == 1 ? :password = caps(password) : :password = small(password)
+        if choice_between_cap_sma == 1
+          password = caps(password)
+        else
+          password = small(password)
+        end
       end
     when 1
       unless num == nums_size
@@ -52,6 +56,7 @@ def random_password (alpha_size,nums_size,symb_size)
       end
     end
   end
+  password
 end
 
 puts "Enter The Length of Combinations "
@@ -79,6 +84,24 @@ while symb_size <= 7
 end
 
 ans = random_password(alpha_size,num_size,symb_size)
+
+puts "--------------------"
+puts ans
+puts "--------------------"
+
+ans = ans + "\n"
+aFile = File.open("passwords.csv", "r")
+if aFile
+  content = aFile.read
+else
+   puts "Unable to open file!"
+end
+aFile = File.open("passwords.csv", "w")
+content = content.to_s
+content = content.insert(0,ans)
+aFile.write(content)
+
+
 
 puts "============================================================="
 puts ans
